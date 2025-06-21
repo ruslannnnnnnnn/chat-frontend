@@ -1,18 +1,22 @@
-import { useEffect, useRef } from 'react'
+import { useRef, useCallback } from 'react'
 import socketApi from '../api/socket.api'
 
 export const useSocketConnection = () => {
-  const gatewayRef = useRef<WebSocket | null>(null)
+  const socketRef = useRef<WebSocket | null>(null)
 
-  useEffect(() => {
-    gatewayRef.current = socketApi.createGatewayConnection()
+  const connect = useCallback(() => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) return
 
-    return () => {
-      gatewayRef.current?.close()
-    }
+    socketRef.current = socketApi.createSocketConnection()
+  }, [])
+
+  const disconnect = useCallback(() => {
+    socketRef.current?.close()
+    socketRef.current = null
   }, [])
 
   return {
-    socketGateway: gatewayRef.current,
+    connect,
+    disconnect,
   }
 }
