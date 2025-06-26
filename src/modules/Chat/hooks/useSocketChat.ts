@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 export const useSocketChat = () => {
 	useEffect(() => {
-		const ws = socketApi.ws
+		const ws = socketApi.getWs()
 
 		ws.onmessage = () => {
 			console.log('message1')
