@@ -1,12 +1,20 @@
 import socketApi from '@/shared/api/socket.api'
+import { useSocketConnectionStore } from '@/shared/store/useSocketConnectionStore'
 import { useEffect } from 'react'
+import { useMessageStore, type ChatMessage } from '../store/useMessageStore'
 
 export const useSocketChat = () => {
-	useEffect(() => {
-		const ws = socketApi.getWs()
+  const socketConnected = useSocketConnectionStore((state) => state.socketConnected)
 
-		ws.onmessage = () => {
-			console.log('message1')
-		}
-	}, [])
+  useEffect(() => {
+    if (!socketConnected) return
+    const ws = socketApi.ws
+
+    ws.onmessage = (event) => {
+      const message: ChatMessage = JSON.parse(event.data)
+      useMessageStore.getState().setChatMessages(message)
+    }
+
+    return () => ws.close()
+  }, [socketConnected])
 }
