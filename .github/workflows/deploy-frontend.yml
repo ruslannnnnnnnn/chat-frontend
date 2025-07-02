@@ -38,5 +38,5 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            docker compose -f ~/app/compose.yaml pull frontend
-            docker compose -f ~/app/compose.yaml up -d frontend
+            docker-compose -f ~/app/compose.yaml pull frontend
+            docker-compose -f ~/app/compose.yaml up -d frontend
