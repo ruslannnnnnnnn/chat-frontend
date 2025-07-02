@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chat-frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
